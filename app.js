@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 				loggedUser = result.data.name;
 				console.log(loggedUser);
 			}
-			res.send('Logged in: '.concat(loggedUser, '<img src ="', result.data.picture, '"height="23" width="23"'));
+			res.send('Logged in: '.concat(loggedUser, '<img src ="', result.data.picture, '"height="23" width="23">'));
 		})
 	}
 })
