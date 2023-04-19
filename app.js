@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
         // Generate an OAuth URL and redirect there
         const url = oAuth2Client.generateAuthUrl({
             access_type: 'offline',
-            scope: 'https://www.googleapis.com/auth/contacts.readonly'
+            scope: 'https://www.googleapis.com/auth/userinfo.profile'
         });
         console.log(url)
         res.redirect(url);
