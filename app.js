@@ -5,19 +5,27 @@ const OAuth2Data = require('./google_key.json')
 
 const app = express()
 
+
+//////////////////////////////////////GOOGLE//////////////////////////////////////////////////////////////////
 const CLIENT_ID = OAuth2Data.web.client_id;
 const CLIENT_SECRET = OAuth2Data.web.client_secret;
 const REDIRECT_URL = OAuth2Data.web.redirect_uris[0];
 
+const CLIENT_ID_GITHUB = "05f7d8738e47d345f54e";
+const CLIENT_SECRET_GITHUB = "c68a2ed343807e61ff341d1f09aed820e54ea2fb"
+
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
 var authedGoogle = false;
+var authedGithub = false;
 var userCredential;
+var githubAccessToken;
 
 app.get('/', (req, res) => {
-    if (!authedGoogle) {
+    if (!authedGoogle && !authedGithub) {
         var response = `<form action='/auth-google' method='post'>
                             <button>Login with google</button>
                         </form>
+                        <a href="https://github.com/login/oauth/authorize?client_id=${CLIENT_ID_GITHUB}>" Github Login</a>
                        `
         res.send(response);
     } 
@@ -37,6 +45,13 @@ app.get('/', (req, res) => {
             `));
 		})
 	}
+    else if(authedGithub) {
+        res.send('<p>Authorized with github!</p>'//.concat`<br>
+                    //<form action='/logout-github' method='post'>
+                    //   <button>Log-out</button>
+                    //</form>`
+            );
+    }
 })
 
 app.post('/auth-google', (req, res) => {
@@ -101,6 +116,26 @@ app.get('/auth/google/callback', function (req, res) {
         });
     }
 });
+
+//////////////////////////////////////GITHUB//////////////////////////////////////////////////////////////////
+
+app.get('/github/callback', (req, res) => {
+
+    // The req.query object has the query params that were sent to this route.
+    const requestToken = req.query.code
+    
+    axios({
+      method: 'post',
+      url: `https://github.com/login/oauth/access_token?client_id=${CLIENT_ID_GITHUB}&client_secret=${CLIENT_SECRET_GITHUB}&code=${requestToken}`,
+      // Set the content type header, so that we get the response in JSON
+      headers: {
+           accept: 'application/json'
+      }
+    }).then((response) => {
+      githubAccessToken = response.data.access_token
+      res.redirect('/');
+    })
+})
 
 const port = process.env.port || 5000
 app.listen(port, () => console.log(`Server running at ${port}`));
