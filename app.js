@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
         var response = `<form action='/auth-google' method='post'>
                             <button>Login with google</button>
                         </form>
-                        <a href="https://github.com/login/oauth/authorize?client_id=${CLIENT_ID_GITHUB}>" Github Login</a>
+                        <a href="https://github.com/login/oauth/authorize?client_id=${CLIENT_ID_GITHUB}"> Github Login</a>
                        `
         res.send(response);
     } 
