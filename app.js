@@ -133,6 +133,7 @@ app.get('/github/callback', (req, res) => {
            accept: 'application/json'
       }
     }).then((response) => {
+      authedGithub = true;  
       githubAccessToken = response.data.access_token
       res.redirect('/');
     })
