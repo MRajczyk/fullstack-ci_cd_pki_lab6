@@ -1,4 +1,5 @@
 const { google } = require('googleapis');
+const https = require('https');
 const express = require('express')
 const OAuth2Data = require('./google_key.json')
 
@@ -29,11 +30,11 @@ app.get('/', (req, res) => {
 				loggedUser = result.data.name;
 				console.log(loggedUser);
 			}
-			res.send(`Logged in: '.concat(loggedUser, '<img src ="', result.data.picture, '"height="23" width="23"><br>
+			res.send('Logged in: '.concat(loggedUser, '<img src ="', result.data.picture, '"height="23" width="23">'.concat`<br>
                         <form action='/logout-google' method='post'>
                             <button>Log-out</button>
                         </form>
-            `);
+            `));
 		})
 	}
 })
