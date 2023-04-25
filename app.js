@@ -80,7 +80,7 @@ app.post('/logout-google', (req, res) => {
     postReq.end();
 
     authedGoogle = false;
-    req.redirect('/');
+    res.redirect('/');
 })
 
 app.get('/auth/google/callback', function (req, res) {
