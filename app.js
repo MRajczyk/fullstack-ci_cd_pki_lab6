@@ -47,10 +47,10 @@ app.get('/', (req, res) => {
 		})
 	}
     else if(authedGithub) {
-        res.send('<p>Authorized with github!</p>'//.concat`<br>
-                    //<form action='/logout-github' method='post'>
-                    //   <button>Log-out</button>
-                    //</form>`
+        res.send('<p>Authorized with github!</p>'.concat`<br>
+                    <form action='/logout-github' method='post'>
+                       <button>Log-out</button>
+                    </form>`
             );
     }
 })
@@ -137,6 +137,11 @@ app.get('/github/callback', (req, res) => {
       githubAccessToken = response.data.access_token
       res.redirect('/');
     })
+})
+
+app.post('/logout-github', (req, res) => {
+    authedGithub = false;
+    res.redirect('/');
 })
 
 const port = process.env.port || 5000
